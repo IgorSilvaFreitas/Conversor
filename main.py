@@ -7,7 +7,7 @@ from regua import regua
 import sys
 
 class MainWindow(QMainWindow, Ui_Conversor):
-    oldPos = None
+
     def __init__(self):
         super(MainWindow, self).__init__()
         self.setupUi(self)
@@ -25,6 +25,16 @@ class MainWindow(QMainWindow, Ui_Conversor):
         #abre a regua
         self.calc_sep.clicked.connect(lambda: regua(self))
 
+    def dragEnterEvent(self, event):
+        if event.mimeData().hasUrls():
+            event.accept()
+        else:
+            event.ignore()
+
+    def dropEvent(self, event):
+        files = [u.toLocalFile() for u in event.mimeData().urls()]
+        for f in files:
+            self.caminho_ql.setText(f)
         
 
 if __name__ == '__main__':
